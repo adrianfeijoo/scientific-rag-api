@@ -67,6 +67,9 @@ class OpenAiCompatibleClient(BaseChatClient):
         self._base_url = base_url.rstrip("/")
 
     def _request(self, system: str, user: str, *, temperature: float) -> str:
+        # `temperature` is deliberately not forwarded: recent OpenAI reasoning
+        # models only accept the default value and reject any other, so the
+        # provider default is used instead of hard-failing the request.
         data = self._post_json(
             f"{self._base_url}/chat/completions",
             headers={"Authorization": f"Bearer {self._api_key}"},
@@ -76,7 +79,6 @@ class OpenAiCompatibleClient(BaseChatClient):
                     {"role": "system", "content": system},
                     {"role": "user", "content": user},
                 ],
-                "temperature": temperature,
             },
         )
         try:

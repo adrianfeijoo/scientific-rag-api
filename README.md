@@ -249,6 +249,10 @@ memoria de chat ni reescritura de queries — y los marcadores de citas que
 apuntan fuera de las fuentes proporcionadas se descartan en lugar de generar
 referencias colgantes.
 
+Nota: el proveedor OpenAI ignora `temperature` — los modelos razonadores
+recientes solo aceptan el valor por defecto y rechazan cualquier otro con un
+400.
+
 ### Códigos de estado
 
 | Código | Cuándo | Body |
