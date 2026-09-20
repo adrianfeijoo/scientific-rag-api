@@ -41,9 +41,11 @@ _HEADERS_TO_SPLIT_ON = [
 _HEADER_KEYS = [name for _, name in _HEADERS_TO_SPLIT_ON]
 
 _WHITESPACE = re.compile(r"\s+")
-# MDPI headings arrive wrapped in emphasis (**1. Introduction**): strip it so
-# citation metadata reads "1. Introduction" instead of literal asterisks.
+# MDPI headings arrive wrapped in emphasis (**1. Introduction**) and pymupdf
+# titles can carry HTML-ish tags (<sup>1</sup>): strip both so citation
+# metadata reads "1. Introduction" instead of literal markup.
 _EMPHASIS = re.compile(r"[*_`]+")
+_TAGS = re.compile(r"<[^>]+>")
 
 
 @dataclass(frozen=True)
@@ -174,13 +176,19 @@ def _pages_for_span(spans: list[tuple[int, int, int]], start: int, end: int) -> 
 
 
 def _section_path(metadata: dict) -> str:
-    """Flatten the header hierarchy into 'Results > Vegetation Indices'."""
-    parts = (_clean_header(metadata.get(key)) for key in _HEADER_KEYS)
+    """Flatten the header hierarchy into 'Results > Vegetation Indices'.
+
+    Header 1 (the article title, as rendered by pymupdf4llm's font-size
+    heuristic) is deliberately skipped: the title already lives in its own
+    metadata field, and repeating it in every section path would only add
+    noise to citations and to the embedded context prefix.
+    """
+    parts = (_clean_header(metadata.get(key)) for key in _HEADER_KEYS[1:])
     return " > ".join(part for part in parts if part)
 
 
 def _clean_header(value: object) -> str:
-    return _WHITESPACE.sub(" ", _EMPHASIS.sub("", str(value or ""))).strip()
+    return _WHITESPACE.sub(" ", _EMPHASIS.sub("", _TAGS.sub("", str(value or "")))).strip()
 
 
 def _chunk_id(source: str, page_start: int, page_end: int, index: int) -> str:

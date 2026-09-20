@@ -27,8 +27,9 @@ def test_rrf_with_single_ranking_matches_rank_order():
 
 def test_tokenize_lowercases_and_drops_single_characters():
     tokens = tokenize("The FWBI1 index (R2 = 0.639, p < 0.05)")
-    # Single characters (r, p, 0) are formula/page noise and get dropped.
-    assert tokens == ["the", "fwbi1", "index", "639", "05"]
+    # Single characters (p, 0) are formula/page noise and get dropped;
+    # "R2" and "05" are meaningful multi-character tokens and stay.
+    assert tokens == ["the", "fwbi1", "index", "r2", "639", "05"]
 
 
 def test_tokenize_empty_query():

@@ -124,8 +124,11 @@ def test_query_end_to_end_with_fake_llm(client, app):
         # [9] points outside the provided sources and must be dropped.
         assert [source["citation_id"] for source in body["sources"]] == [1, 2]
         for source in body["sources"]:
-            for field in ("chunk_id", "document", "title", "pages", "section"):
-                assert source[field]
+            assert source["chunk_id"] and source["document"] and source["pages"]
+            assert source["title"]
+            # Section is legitimately empty for front-matter chunks that only
+            # sit under the article-title header.
+            assert isinstance(source["section"], str)
     finally:
         app.state.llm_client, app.state.llm_info = original
 
