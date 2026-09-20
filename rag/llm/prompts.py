@@ -42,8 +42,10 @@ def build_user_prompt(question: str, chunks: list[RetrievedChunk]) -> str:
                 "----------------",
                 f"Source [{position}]",
                 f"Chunk_ID: {chunk.chunk_id}",
-                f"Document: {chunk.source} | Pages: {format_pages(chunk.pages)} | "
-                f"Section: {chunk.section or 'unknown'}",
+                (
+                    f"Document: {chunk.source} | Pages: {format_pages(chunk.pages)} | "
+                    f"Section: {chunk.section or 'unknown'}"
+                ),
                 "Content:",
                 chunk.content,
             ]

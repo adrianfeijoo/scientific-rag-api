@@ -33,7 +33,7 @@ _OLLAMA_PROBE_TIMEOUT_SECONDS = 2.0
 _DEEPSEEK_BASE_URL = "https://api.deepseek.com"
 
 
-def build_llm(settings: "Settings") -> tuple[BaseChatClient | None, LlmInfo | None]:
+def build_llm(settings: Settings) -> tuple[BaseChatClient | None, LlmInfo | None]:
     """Return (client, info) for the configured provider, or (None, None) in
     auto mode when nothing is usable."""
     if settings.llm_provider == "auto":
@@ -50,7 +50,7 @@ def build_llm(settings: "Settings") -> tuple[BaseChatClient | None, LlmInfo | No
     return _build_provider(settings, settings.llm_provider)
 
 
-def _api_key(settings: "Settings", provider: str) -> str | None:
+def _api_key(settings: Settings, provider: str) -> str | None:
     return {
         "openai": settings.openai_api_key,
         "anthropic": settings.anthropic_api_key,
@@ -58,7 +58,7 @@ def _api_key(settings: "Settings", provider: str) -> str | None:
     }.get(provider)
 
 
-def _build_provider(settings: "Settings", provider: str) -> tuple[BaseChatClient, LlmInfo]:
+def _build_provider(settings: Settings, provider: str) -> tuple[BaseChatClient, LlmInfo]:
     if provider == "openai":
         if not settings.openai_api_key:
             raise ConfigurationError("LLM_PROVIDER=openai requires OPENAI_API_KEY.")

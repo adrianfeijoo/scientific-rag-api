@@ -28,7 +28,7 @@ def embedding_text(chunk: Chunk, *, with_section: bool = True) -> str:
 
 def embed_chunks(
     chunks: list[Chunk],
-    embedder: "Embedder",
+    embedder: Embedder,
     *,
     with_section: bool = True,
     batch_size: int = 32,

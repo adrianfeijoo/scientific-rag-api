@@ -18,14 +18,14 @@ from pathlib import Path
 # Plain-script execution: make the project-root packages (app, rag) importable.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from tqdm import tqdm  # noqa: E402
+from tqdm import tqdm
 
-from app.config import Settings  # noqa: E402
-from rag.ingestion.chunker import chunk_document  # noqa: E402
-from rag.ingestion.indexer import embed_chunks  # noqa: E402
-from rag.ingestion.loader import load_pdf  # noqa: E402
-from rag.retrieval.embeddings import get_embedder  # noqa: E402
-from rag.retrieval.store import VectorStore  # noqa: E402
+from app.config import Settings
+from rag.ingestion.chunker import chunk_document
+from rag.ingestion.indexer import embed_chunks
+from rag.ingestion.loader import load_pdf
+from rag.retrieval.embeddings import get_embedder
+from rag.retrieval.store import VectorStore
 
 
 def main() -> int:
