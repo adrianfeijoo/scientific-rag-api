@@ -13,7 +13,7 @@ from sentence_transformers import SentenceTransformer
 # short-query -> passage retrieval. Passages are embedded without it.
 _BGE_QUERY_INSTRUCTION = "Represent this sentence for searching relevant passages: "
 
-_embedders: dict[str, "Embedder"] = {}
+_embedders: dict[str, Embedder] = {}
 
 
 class Embedder:

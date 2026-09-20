@@ -42,8 +42,9 @@ class VectorStore:
         try:
             self._client.delete_collection(self._name)
             logger.info("Dropped existing collection '%s'", self._name)
-        except Exception:  # noqa: BLE001 - collection simply did not exist yet
-            pass
+        except Exception:
+            # A missing collection is the normal first-run case, not an error.
+            logger.debug("Collection '%s' did not exist yet; creating it", self._name, exc_info=True)
         self._collection = self._client.create_collection(
             name=self._name, metadata=_COLLECTION_METADATA
         )
