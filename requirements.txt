@@ -1,0 +1,28 @@
+# Requires Python >=3.12. Tested on CPython 3.12.14 and 3.14.7, Linux x86_64.
+# The extra index provides the CPU-only torch wheel; without it, pip resolves
+# the default CUDA-bundled wheel (~2.5 GB) from PyPI. torch is pinned here
+# explicitly (although it reaches us transitively via sentence-transformers)
+# to guarantee that CPU-only resolution.
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# API service
+fastapi==0.141.1
+uvicorn==0.53.0
+pydantic==2.13.5
+pydantic-settings==2.15.0
+
+# Ingestion / chunking
+pymupdf==1.28.2
+pymupdf4llm==1.28.2
+langchain-text-splitters==1.1.2
+tqdm==4.70.1
+
+# Retrieval
+chromadb==1.5.9
+sentence-transformers==6.1.0
+torch==2.14.0+cpu
+rank-bm25==0.2.2
+numpy==2.5.3
+
+# LLM providers (REST clients)
+httpx==0.28.1

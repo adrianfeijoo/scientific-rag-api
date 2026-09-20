@@ -128,6 +128,14 @@ ENV/
 env.bak/
 venv.bak/
 
+# Project: generated vector index and local Hugging Face cache
+data/chroma/
+.hf_cache/
+.ruff_cache/
+
+# Stray artifact emitted by ChromaDB's embedded sqlite
+:memory:.ses
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -158,3 +166,11 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+# Project: generated vector index and local Hugging Face cache
+data/chroma/
+.hf_cache/
+.ruff_cache/
+
+# Stray artifact emitted by ChromaDB's embedded sqlite
+:memory:.ses
