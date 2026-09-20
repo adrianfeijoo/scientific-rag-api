@@ -25,10 +25,9 @@ class LlmInfo:
 class BaseChatClient(ABC):
     """Single-shot chat completion contract shared by every provider."""
 
-    def __init__(self, info: LlmInfo, *, timeout: float, max_tokens: int) -> None:
+    def __init__(self, info: LlmInfo, *, timeout: float) -> None:
         self.info = info
         self._timeout = timeout
-        self._max_tokens = max_tokens
 
     def complete(self, system: str, user: str, *, temperature: float) -> str:
         try:
@@ -62,9 +61,8 @@ class OpenAiCompatibleClient(BaseChatClient):
         api_key: str,
         base_url: str = "https://api.openai.com/v1",
         timeout: float,
-        max_tokens: int,
     ) -> None:
-        super().__init__(info, timeout=timeout, max_tokens=max_tokens)
+        super().__init__(info, timeout=timeout)
         self._api_key = api_key
         self._base_url = base_url.rstrip("/")
 
@@ -79,7 +77,6 @@ class OpenAiCompatibleClient(BaseChatClient):
                     {"role": "user", "content": user},
                 ],
                 "temperature": temperature,
-                "max_tokens": self._max_tokens,
             },
         )
         try:
@@ -88,15 +85,18 @@ class OpenAiCompatibleClient(BaseChatClient):
             raise LlmError(f"Unexpected {self.info.provider} response shape: {data}") from exc
 
 
+# The Messages API rejects requests without an explicit generation limit;
+# unlike the other providers, it cannot simply be omitted.
+_ANTHROPIC_MAX_TOKENS = 1024
+
+
 class AnthropicClient(BaseChatClient):
     """Anthropic Messages API."""
 
     _API_VERSION = "2023-06-01"
 
-    def __init__(
-        self, info: LlmInfo, *, api_key: str, timeout: float, max_tokens: int
-    ) -> None:
-        super().__init__(info, timeout=timeout, max_tokens=max_tokens)
+    def __init__(self, info: LlmInfo, *, api_key: str, timeout: float) -> None:
+        super().__init__(info, timeout=timeout)
         self._api_key = api_key
 
     def _request(self, system: str, user: str, *, temperature: float) -> str:
@@ -109,7 +109,7 @@ class AnthropicClient(BaseChatClient):
             payload={
                 "model": self.info.model,
                 # max_tokens is mandatory in the Messages API.
-                "max_tokens": self._max_tokens,
+                "max_tokens": _ANTHROPIC_MAX_TOKENS,
                 "system": system,
                 "messages": [{"role": "user", "content": user}],
                 "temperature": temperature,
@@ -132,9 +132,8 @@ class OllamaClient(BaseChatClient):
         *,
         base_url: str = "http://localhost:11434",
         timeout: float,
-        max_tokens: int,
     ) -> None:
-        super().__init__(info, timeout=timeout, max_tokens=max_tokens)
+        super().__init__(info, timeout=timeout)
         self._base_url = base_url.rstrip("/")
 
     def _request(self, system: str, user: str, *, temperature: float) -> str:
@@ -150,7 +149,6 @@ class OllamaClient(BaseChatClient):
                 "stream": False,
                 "options": {
                     "temperature": temperature,
-                    "num_predict": self._max_tokens,
                 },
             },
         )

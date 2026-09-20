@@ -177,7 +177,7 @@ así que lanzar Ollama después funciona sin reiniciar la API).
 | `EMBED_SECTION_CONTEXT` | `true` | Prefijar el título de sección al pasaje *embebido* (el contenido almacenado permanece limpio) |
 | `BGE_QUERY_INSTRUCTION` | `true` | Instruction prefix de BGE para las queries |
 | `PDF_DIR` / `CHROMA_DIR` / `COLLECTION_NAME` | `data/raw_pdfs` / `data/chroma` / `scientific_docs` | Layout del almacenamiento |
-| `LLM_TIMEOUT_SECONDS` / `LLM_MAX_TOKENS` | `60` / `1024` | Presupuesto de llamada para proveedores cloud (Ollama tiene 300 s) |
+| `LLM_TIMEOUT_SECONDS` | `60` | Presupuesto de llamada para proveedores cloud (Ollama tiene 300 s) |
 
 ## API
 

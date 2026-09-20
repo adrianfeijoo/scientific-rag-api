@@ -34,7 +34,6 @@ class FakeLlmClient(BaseChatClient):
         super().__init__(
             LlmInfo(provider="fake", model="fake-model-for-tests"),
             timeout=1.0,
-            max_tokens=64,
         )
 
     def _request(self, system: str, user: str, *, temperature: float) -> str:

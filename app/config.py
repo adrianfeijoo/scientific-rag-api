@@ -73,4 +73,3 @@ class Settings(BaseSettings):
     llm_timeout_seconds: float = 60.0
     # Local inference is CPU-bound and needs a much larger budget than APIs.
     ollama_timeout_seconds: float = 300.0
-    llm_max_tokens: int = 1024
