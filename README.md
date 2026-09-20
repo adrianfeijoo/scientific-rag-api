@@ -67,10 +67,12 @@ que supera claramente a all-MiniLM-L6-v2 para retrieval en inglés (51.7 vs 41.7
 NDCG@10 en BEIR). Para compensar las limitaciones inherentes a la búsqueda densa 
 pura, los resultados semánticos de ChromaDB se combinan con un índice léxico BM25 
 (rank_bm25) mediante Reciprocal Rank Fusion (RRF). Así, el modelo denso captura 
-similitudes semánticas abstractas o parafraseadas, mientras queBM25 asegura la 
+similitudes semánticas abstractas o parafraseadas, mientras que BM25 asegura la 
 recuperación exacta de entidades léxicas específicas, (tales como acrónimos 
 de sensores, fórmulas o nombres de cultivares) que a menudo sufren atenuación
-o dispersión en el espacio de embeddings densos.
+o dispersión en el espacio de embeddings densos. Como variante ligera de contextual 
+retrieval, el encabezado de la sección (p. ej., Metodología) se prefija al pasaje 
+antes de generar el embedding denso.
 
 ### 2. Si el corpus fuera 100 veces más grande
 
@@ -168,9 +170,9 @@ así que lanzar Ollama después funciona sin reiniciar la API).
 | Variable | Default | Descripción |
 |---|---|---|
 | `LLM_PROVIDER` | `auto` | Primero disponible de openai → anthropic → deepseek → ollama; un valor explícito falla rápido al arrancar si no es usable |
-| `OPENAI_API_KEY` / `OPENAI_MODEL` | – / `gpt-4o-mini` | Proveedor OpenAI |
-| `ANTHROPIC_API_KEY` / `ANTHROPIC_MODEL` | – / `claude-haiku-4-5` | Proveedor Anthropic |
-| `DEEPSEEK_API_KEY` / `DEEPSEEK_MODEL` | – / `deepseek-chat` | DeepSeek (REST OpenAI-compatible) |
+| `OPENAI_API_KEY` / `OPENAI_MODEL` | – / `gpt-5.6-luna` | Proveedor OpenAI |
+| `ANTHROPIC_API_KEY` / `ANTHROPIC_MODEL` | – / `claude-haiku-4-5-20251001` | Proveedor Anthropic |
+| `DEEPSEEK_API_KEY` / `DEEPSEEK_MODEL` | – / `deepseek-flash` | DeepSeek (REST OpenAI-compatible) |
 | `OLLAMA_BASE_URL` / `OLLAMA_MODEL` | `http://localhost:11434` / `llama3.2` | Proveedor local, sin key |
 | `EMBEDDING_MODEL` | `BAAI/bge-small-en-v1.5` | Encoder de sentence-transformers de 384 dims |
 | `CHUNK_SIZE` / `CHUNK_OVERLAP` | `750` / `140` | Split recursivo de fase 2 |
