@@ -124,8 +124,8 @@ de prueba curado con preguntas y fragmentos de referencia (ground truth):
 
 ## Instalación y ejecución local
 
-Requisitos: Python 3.10+ (desarrollado y probado en 3.14, Linux x86_64) y
-aproximadamente 2 GB de disco para el entorno virtual (torch CPU-only).
+Requisitos: Python >= 3.12 (probado en CPython 3.12.14 y 3.14.7, Linux x86_64) y aproximadamente
+2 GB de disco para el entorno virtual (torch CPU-only).
 
 1. **Instalar dependencias** (solo dependencias directas, fijadas con versión
    exacta; el índice extra proporciona la wheel de torch CPU-only):
