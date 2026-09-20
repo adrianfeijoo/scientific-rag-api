@@ -13,6 +13,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
+from app.config import Settings
 from app.routers import health, query, retrieve
 from rag.exceptions import (
     EmptyStoreError,
@@ -24,7 +25,6 @@ from rag.llm.factory import build_llm
 from rag.retrieval.embeddings import get_embedder
 from rag.retrieval.hybrid import HybridRetriever
 from rag.retrieval.store import VectorStore
-from app.config import Settings
 
 logger = logging.getLogger("scientific_rag")
 

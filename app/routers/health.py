@@ -5,6 +5,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Request
 
 from app.schemas import HealthResponse
+from rag.exceptions import VectorStoreError
 
 router = APIRouter(tags=["Health"])
 
@@ -16,7 +17,7 @@ def health(request: Request) -> HealthResponse:
     try:
         total_chunks = retriever.total_chunks
         documents_indexed = len(retriever.sources)
-    except Exception:  # pragma: no cover - defensive: Chroma dir unreadable/corrupt
+    except VectorStoreError:  # pragma: no cover - defensive: Chroma dir unreadable/corrupt
         raise HTTPException(
             status_code=503, detail="Vector store is not responding."
         ) from None

@@ -12,6 +12,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal
 
+from pydantic import ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Project root = parent of the `app` package; anchors all default paths.
@@ -25,7 +26,21 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    # --- Paths ---
+    @field_validator("*", mode="before")
+    @classmethod
+    def _empty_string_means_unset(cls, value: object, info: ValidationInfo) -> object:
+        """Treat empty values in `.env` (e.g. `OLLAMA_BASE_URL=`) as unset.
+
+        Without this, an empty string silently overrides the field default —
+        for instance breaking Ollama auto-detection even with the server
+        running. Copying `.env.example` and leaving keys blank must be safe.
+        """
+        if isinstance(value, str) and not value.strip():
+            field = cls.model_fields.get(info.field_name)
+            if field is not None and not field.is_required():
+                return field.get_default(call_default_factory=True)
+        return value
+
     # Paths
     pdf_dir: Path = PROJECT_ROOT / "data" / "raw_pdfs"
     chroma_dir: Path = PROJECT_ROOT / "data" / "chroma"
