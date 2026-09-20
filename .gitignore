@@ -128,6 +128,10 @@ ENV/
 env.bak/
 venv.bak/
 
+# Project: generated vector index and local Hugging Face cache
+data/chroma/
+.hf_cache/
+
 # Spyder project settings
 .spyderproject
 .spyproject
